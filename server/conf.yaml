@@ -1,0 +1,11 @@
+db :
+  sqlType : sqlite  # mysql || sqlite
+  database: todo
+  username : root
+  password : 123456
+  port : 3306
+  host : 127.0.0.1
+server :
+  port : 4000
+  ginMode : debug # debug || release || test
+
