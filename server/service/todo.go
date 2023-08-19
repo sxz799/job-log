@@ -9,7 +9,7 @@ type TodoService struct {
 }
 
 func (ts *TodoService) List() (todos []model.Todo, err error) {
-	err = util.DB.Find(&todos).Error
+	err = util.DB.Order("id DESC").Find(&todos).Error
 	return
 }
 

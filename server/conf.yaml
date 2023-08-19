@@ -1,5 +1,5 @@
 db :
-  sqlType : mysql  # mysql || sqlite
+  sqlType : sqlite  # mysql || sqlite
   database: todo
   username : root
   password : 123456

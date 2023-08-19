@@ -52,9 +52,9 @@ func Del(c *gin.Context) {
 		return
 	}
 	if err = ts.Del(id); err == nil {
-		util.ResponseError(c, http.StatusNotFound, err.Error())
-	} else {
 		util.ResponseOK(c, "删除成功！", nil)
+	} else {
+		util.ResponseError(c, http.StatusNotFound, err.Error())
 	}
 
 }

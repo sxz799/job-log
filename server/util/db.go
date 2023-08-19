@@ -3,6 +3,7 @@ package util
 import (
 	"github.com/spf13/viper"
 	"gorm.io/driver/mysql"
+	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"log"
 	"todo-demo/model"
@@ -25,12 +26,12 @@ func InitDB() {
 		if err != nil {
 			log.Panicln("mysql数据库连接失败。", err)
 		}
-		//case "sqlite":
-		//	var err error
-		//	DB, err = gorm.Open(sqlite.Open(database+".db"), &gorm.Config{})
-		//	if err != nil {
-		//		log.Panicln("sqlite数据库连接失败。", err)
-		//	}
+	case "sqlite":
+		var err error
+		DB, err = gorm.Open(sqlite.Open(database+".db"), &gorm.Config{})
+		if err != nil {
+			log.Panicln("sqlite数据库连接失败。", err)
+		}
 	}
 }
 

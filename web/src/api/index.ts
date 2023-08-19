@@ -1,20 +1,18 @@
 import request from '../utils/request'
 
 
-
-const api = {
-    list() {
-        return request.get("/api/todo/list")
-    },
-    get(id: number) {
-        return request.get("/api/todo/" + id)
-    },
-    add(data: {}) {
-        return request.post("/api/todo/", data)
-    },
-    del(id: number) {
-        return request.delete("/api/todo/" + id)
-    },
+export function list(){
+    return request.get("/api/todo/list")
+}
+export function get(id:number){
+    return request.get("/api/todo/" + id)
+}
+export function add(data:{}){
+    return request.post("/api/todo/add", data)
+}
+export function del(id:number){
+    return request.delete("/api/todo/" + id)
 }
 
-export default api
+
+
