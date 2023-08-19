@@ -18,12 +18,7 @@ func main() {
 	gin.SetMode(config.GinMode)
 	r := gin.Default()
 
-	cor := cors.DefaultConfig()
-	cor.AllowOrigins = []string{"*"}
-	cor.AllowMethods = []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}
-	cor.AllowHeaders = []string{"*"}
-	cor.AllowFiles = true
-	r.Use(cors.New(cor))
+	r.Use(cors.Default())
 
 	router.RegRouter(r)
 

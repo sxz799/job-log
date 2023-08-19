@@ -1,7 +1,6 @@
 # todo-gin-gorm-demo
 
-todo 待办
-一个前后端分离项目模板
+todo 待办 一个前后端分离项目模板
 
 ### 后端
 
