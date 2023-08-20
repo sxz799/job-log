@@ -10,7 +10,7 @@ type TodoService struct {
 }
 
 func (ts *TodoService) List() (todos []model.Todo, err error) {
-	err = util.DB.Debug().Where("delete_at=?", "").Order("status").Order("id DESC").Find(&todos).Error
+	err = util.DB.Where("delete_at=?", "").Order("status").Order("id DESC").Find(&todos).Error
 	return
 }
 
@@ -34,7 +34,17 @@ func (ts *TodoService) Finish(id int) (err error) {
 		FinishAt: time.Now().Format(time.DateTime),
 		UpdateAt: time.Now().Format(time.DateTime),
 	}
-	err = util.DB.Debug().UpdateColumns(&todo).Error
+	err = util.DB.UpdateColumns(&todo).Error
+	return
+}
+func (ts *TodoService) UnFinish(id int) (err error) {
+	todo := model.Todo{
+		Id:       id,
+		Status:   "N",
+		FinishAt: " ", //设置为空时不会更新
+		UpdateAt: time.Now().Format(time.DateTime),
+	}
+	err = util.DB.UpdateColumns(&todo).Error
 	return
 }
 
@@ -43,7 +53,7 @@ func (ts *TodoService) Del(id int) (err error) {
 		Id:       id,
 		DeleteAt: time.Now().Format(time.DateTime),
 	}
-	err = util.DB.Debug().UpdateColumns(&todo).Error
+	err = util.DB.UpdateColumns(&todo).Error
 	return
 }
 

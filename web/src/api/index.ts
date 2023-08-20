@@ -16,6 +16,9 @@ export function update(data:{}){
 export function finish(id:number){
     return request.get("/api/todo/finish/"+ id)
 }
+export function unfinish(id:number){
+    return request.get("/api/todo/unfinish/"+ id)
+}
 export function del(id:number){
     return request.delete("/api/todo/" + id)
 }
