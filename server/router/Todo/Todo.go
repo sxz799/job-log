@@ -10,7 +10,10 @@ func Todo(e *gin.Engine) {
 	{
 		g.GET("/list", api.List)
 		g.POST("/add", api.Add)
+		g.POST("/update", api.Update)
+		g.GET("/finish/:id", api.Finish)
 		g.GET("/:id", api.Get)
 		g.DELETE("/:id", api.Del)
+
 	}
 }
