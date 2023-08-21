@@ -27,27 +27,6 @@ func (ts *TodoService) Update(t model.Todo) (err error) {
 	return
 }
 
-func (ts *TodoService) Finish(id int) (err error) {
-	todo := model.Todo{
-		Id:       id,
-		Status:   "Y",
-		FinishAt: time.Now().Format(time.DateTime),
-		UpdateAt: time.Now().Format(time.DateTime),
-	}
-	err = util.DB.UpdateColumns(&todo).Error
-	return
-}
-func (ts *TodoService) UnFinish(id int) (err error) {
-	todo := model.Todo{
-		Id:       id,
-		Status:   "N",
-		FinishAt: " ", //设置为空时不会更新
-		UpdateAt: time.Now().Format(time.DateTime),
-	}
-	err = util.DB.UpdateColumns(&todo).Error
-	return
-}
-
 func (ts *TodoService) Del(id int) (err error) {
 	todo := model.Todo{
 		Id:       id,
