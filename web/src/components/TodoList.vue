@@ -5,12 +5,12 @@
       <el-container>
         <el-header></el-header>
         <el-main>
-          <el-row :gutter="20">
-            <el-col :span="20">
+          <el-row :gutter="2">
+            <el-col :span="22" :xs="20">
               <el-input type="textarea" :autosize="{ minRows: 1, maxRows: 6 }" v-model="newTodo"
                         placeholder="添加待办事项... "></el-input>
             </el-col>
-            <el-col :span="4">
+            <el-col :span="2" :xs="4">
               <el-button @click="addTodo" type="primary">添加</el-button>
             </el-col>
           </el-row>
@@ -19,8 +19,14 @@
               :data="todos"
               style="width: 100%"
           >
-            <el-table-column fixed="left" prop="id" label="序号" width="80"/>
-            <el-table-column prop="content" label="内容" >
+            <el-table-column prop="id" label="序号" width="60">
+              <template #default="scope">
+                <el-tag round size="small" :type="getStatusTagType(scope.row.status)">
+                  {{ scope.row.id }}
+                </el-tag>
+              </template>
+            </el-table-column>
+            <el-table-column prop="content" label="内容">
               <template #default="scope">
                 <el-input
                     type="textarea"
@@ -30,22 +36,22 @@
                 ></el-input>
               </template>
             </el-table-column>
-            <el-table-column prop="status" label="状态" width="90">
+            <el-table-column v-if="false" prop="status" label="状态" width="90">
               <template #default="scope">
                 <el-tag round size="large" :type="getStatusTagType(scope.row.status)">
                   {{ getStatusLabel(scope.row.status) }}
                 </el-tag>
               </template>
             </el-table-column>
-<!--            <el-table-column prop="create_at" label="创建时间" width="170"/>-->
-<!--            <el-table-column prop="finish_at" label="完成时间" width="170"/>-->
-            <!--            <el-table-column prop="update_at" label="更新时间" width="180"/>-->
-            <el-table-column align="left" fixed="right" label="操作" width="120">
+            <el-table-column v-if="false" prop="create_at" label="创建时间" width="170"/>
+            <el-table-column v-if="false" prop="finish_at" label="完成时间" width="170"/>
+            <el-table-column v-if="false" prop="update_at" label="更新时间" width="180"/>
+            <el-table-column label="操作" width="120">
               <template #default="scope">
                 <el-button v-if="scope.row.status==='N'" type="primary"
                            @click="finishTodo(scope.row)" :icon="Check" circle>
                 </el-button>
-                <el-button v-if="scope.row.status==='Y'" type="primary"
+                <el-button v-if="scope.row.status==='Y'" type="warning"
                            @click="unfinishTodo(scope.row)" :icon="RefreshLeft" circle>
                 </el-button>
                 <el-popconfirm
@@ -76,16 +82,16 @@
 
 import {list, add, del, update} from "../api";
 import {ref} from "vue";
-import {Check, Delete,RefreshLeft} from '@element-plus/icons-vue'
+import {Check, Delete, RefreshLeft} from '@element-plus/icons-vue'
 import {ElMessage} from "element-plus";
 
 
 class Todo {
-  id:number;
-  content:string;
-  status:string;
-  finish_at:string;
-  update_at:string
+  id: number;
+  content: string;
+  status: string;
+  finish_at: string;
+  update_at: string
 }
 
 const todos = ref([]);
@@ -98,7 +104,7 @@ function listTodos() {
 }
 
 function addTodo() {
-  if(!newTodo.value){
+  if (!newTodo.value) {
     ElMessage("内容不可为空！")
     return
   }
@@ -107,34 +113,47 @@ function addTodo() {
   }).then(response => {
     if (response.data.success) {
       listTodos()
+      ElMessage.success(response.data.message)
+    } else {
+      ElMessage.error(response.data.message)
     }
   })
 }
 
 function updateTodo(data: Todo) {
-  data.update_at=formatDateTime()
-  update(data.id,data).then(response => {
+  data.update_at = formatDateTime()
+  update(data.id, data).then(response => {
     if (response.data.success) {
       listTodos()
+      ElMessage.success(response.data.message)
+    } else {
+      ElMessage.error(response.data.message)
     }
   })
 }
 
-function finishTodo(data:Todo) {
-  data.status='Y'
-  data.finish_at=formatDateTime()
-  update(data.id,data).then(response => {
+function finishTodo(data: Todo) {
+  data.status = 'Y'
+  data.finish_at = formatDateTime()
+  update(data.id, data).then(response => {
     if (response.data.success) {
       listTodos()
+      ElMessage.success(response.data.message)
+    } else {
+      ElMessage.error(response.data.message)
     }
   })
 }
-function unfinishTodo(data:Todo) {
-  data.status='N'
-  data.finish_at=' '
-  update(data.id,data).then(response => {
+
+function unfinishTodo(data: Todo) {
+  data.status = 'N'
+  data.finish_at = ' '
+  update(data.id, data).then(response => {
     if (response.data.success) {
       listTodos()
+      ElMessage.success(response.data.message)
+    } else {
+      ElMessage.error(response.data.message)
     }
   })
 }
@@ -143,7 +162,11 @@ function deleteTodo(index: number) {
   del(index).then(response => {
     if (response.data.success) {
       listTodos()
+      ElMessage.success(response.data.message)
+    } else {
+      ElMessage.error(response.data.message)
     }
+
   })
 }
 
@@ -162,6 +185,14 @@ function getStatusLabel(status: string) {
 
 function getStatusTagType(status: string) {
   return status === 'Y' ? 'success' : 'danger'; // 根据状态选择不同的标签类型
+}
+
+function tableRowClassName({row}) {
+  if (row.status === "Y") {
+    return "green"
+  } else {
+    return "red"
+  }
 }
 
 function formatDateTime() {
