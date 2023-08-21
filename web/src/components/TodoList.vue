@@ -1,11 +1,11 @@
 <template>
   <el-row :gutter="24">
-    <el-col :span="4"/>
-    <el-col :span="16">
+    <el-col :span="4" :xs="0"/>
+    <el-col :span="16" :xs="24">
       <el-container>
         <el-header></el-header>
         <el-main>
-          <el-row :gutter="24">
+          <el-row :gutter="20">
             <el-col :span="20">
               <el-input type="textarea" :autosize="{ minRows: 1, maxRows: 6 }" v-model="newTodo"
                         placeholder="添加待办事项... "></el-input>
@@ -20,7 +20,7 @@
               style="width: 100%"
           >
             <el-table-column fixed="left" prop="id" label="序号" width="80"/>
-            <el-table-column prop="content" label="内容" width="300">
+            <el-table-column prop="content" label="内容" >
               <template #default="scope">
                 <el-input
                     type="textarea"
@@ -37,16 +37,16 @@
                 </el-tag>
               </template>
             </el-table-column>
-            <el-table-column prop="create_at" label="创建时间" width="170"/>
-            <el-table-column prop="finish_at" label="完成时间" width="170"/>
+<!--            <el-table-column prop="create_at" label="创建时间" width="170"/>-->
+<!--            <el-table-column prop="finish_at" label="完成时间" width="170"/>-->
             <!--            <el-table-column prop="update_at" label="更新时间" width="180"/>-->
             <el-table-column align="left" fixed="right" label="操作" width="120">
               <template #default="scope">
                 <el-button v-if="scope.row.status==='N'" type="primary"
-                           @click="finishTodo(scope.row.id)" :icon="Check" circle>
+                           @click="finishTodo(scope.row)" :icon="Check" circle>
                 </el-button>
                 <el-button v-if="scope.row.status==='Y'" type="primary"
-                           @click="unfinishTodo(scope.row.id)" :icon="RefreshLeft" circle>
+                           @click="unfinishTodo(scope.row)" :icon="RefreshLeft" circle>
                 </el-button>
                 <el-popconfirm
                     confirm-button-text="确定"
@@ -66,7 +66,7 @@
         <el-footer></el-footer>
       </el-container>
     </el-col>
-    <el-col :span="4"/>
+    <el-col :span="4" :xs="0"/>
   </el-row>
 
 
@@ -74,9 +74,19 @@
 
 <script setup lang="ts">
 
-import {list, add, del, finish, update, unfinish} from "../api";
+import {list, add, del, update} from "../api";
 import {ref} from "vue";
 import {Check, Delete,RefreshLeft} from '@element-plus/icons-vue'
+import {ElMessage} from "element-plus";
+
+
+class Todo {
+  id:number;
+  content:string;
+  status:string;
+  finish_at:string;
+  update_at:string
+}
 
 const todos = ref([]);
 const newTodo = ref("");
@@ -88,6 +98,10 @@ function listTodos() {
 }
 
 function addTodo() {
+  if(!newTodo.value){
+    ElMessage("内容不可为空！")
+    return
+  }
   add({
     content: newTodo.value
   }).then(response => {
@@ -97,23 +111,28 @@ function addTodo() {
   })
 }
 
-function updateTodo(data: {}) {
-  update(data).then(response => {
+function updateTodo(data: Todo) {
+  data.update_at=formatDateTime()
+  update(data.id,data).then(response => {
     if (response.data.success) {
       listTodos()
     }
   })
 }
 
-function finishTodo(id: number) {
-  finish(id).then(response => {
+function finishTodo(data:Todo) {
+  data.status='Y'
+  data.finish_at=formatDateTime()
+  update(data.id,data).then(response => {
     if (response.data.success) {
       listTodos()
     }
   })
 }
-function unfinishTodo(id: number) {
-  unfinish(id).then(response => {
+function unfinishTodo(data:Todo) {
+  data.status='N'
+  data.finish_at=' '
+  update(data.id,data).then(response => {
     if (response.data.success) {
       listTodos()
     }
@@ -145,6 +164,17 @@ function getStatusTagType(status: string) {
   return status === 'Y' ? 'success' : 'danger'; // 根据状态选择不同的标签类型
 }
 
+function formatDateTime() {
+  const currentDate = new Date();
+  const year = currentDate.getFullYear();
+  const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Month is zero-based, so add 1
+  const day = String(currentDate.getDate()).padStart(2, '0');
+  const hours = String(currentDate.getHours()).padStart(2, '0');
+  const minutes = String(currentDate.getMinutes()).padStart(2, '0');
+  const seconds = String(currentDate.getSeconds()).padStart(2, '0');
+
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+}
 
 </script>
 

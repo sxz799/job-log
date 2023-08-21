@@ -6,19 +6,13 @@ export function list(){
 }
 
 export function add(data:{}){
-    return request.post("/api/todo/add", data)
+    return request.post("/api/todo/", data)
 }
 
-export function update(data:{}){
-    return request.post("/api/todo/update", data)
+export function update(id:number,data:{}){
+    return request.put("/api/todo/"+id, data)
 }
 
-export function finish(id:number){
-    return request.get("/api/todo/finish/"+ id)
-}
-export function unfinish(id:number){
-    return request.get("/api/todo/unfinish/"+ id)
-}
 export function del(id:number){
     return request.delete("/api/todo/" + id)
 }
