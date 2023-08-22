@@ -5,14 +5,25 @@
       <el-container>
         <el-header></el-header>
         <el-main>
-          <el-row :gutter="2">
-            <el-col :span="22" :xs="20">
-              <el-input type="textarea" :autosize="{ minRows: 1, maxRows: 6 }" v-model="newTodo"
-                        placeholder="添加待办事项... "></el-input>
+          <el-row >
+            <el-col :span="1" :xs="0"/>
+            <el-col :span="20" :xs="18">
+              <el-input
+                  :resize="'none'"
+                  type="textarea"
+                  :autosize="{ minRows: 2, maxRows: 6 }"
+                  v-model="newTodo"
+                  placeholder="添加待办事项... "
+              ></el-input>
             </el-col>
-            <el-col :span="2" :xs="4">
-              <el-button @click="addTodo" type="primary">添加</el-button>
+            <el-col :span="2" :xs="6" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+              <el-button
+                  size="large"
+                  :auto-insert-space="true"
+                  @click="addTodo"
+                  type="primary">添加</el-button>
             </el-col>
+            <el-col :span="1" :xs="0"/>
           </el-row>
           <el-divider></el-divider>
           <el-table
@@ -29,8 +40,9 @@
             <el-table-column prop="content" label="内容">
               <template #default="scope">
                 <el-input
+                    :resize="'none'"
                     type="textarea"
-                    :autosize="{ minRows: 1, maxRows: 4 }"
+                    :autosize="{ minRows: 1, maxRows: 6 }"
                     v-model="scope.row.content"
                     @blur="updateTodo(scope.row)"
                 ></el-input>
@@ -68,6 +80,19 @@
               </template>
             </el-table-column>
           </el-table>
+          <el-pagination
+              small
+              :style="{'justify-content':'center'}"
+              :background="true"
+              :hide-on-single-page="false"
+              :current-page="page"
+              :page-size="pageSize"
+              :page-sizes="[5, 10, 30, 50]"
+              :total="total"
+              layout=" sizes, prev, pager, next"
+              @current-change="handleCurrentChange"
+              @size-change="handleSizeChange"
+          />
         </el-main>
         <el-footer></el-footer>
       </el-container>
@@ -96,10 +121,18 @@ class Todo {
 
 const todos = ref([]);
 const newTodo = ref("");
+const page = ref(1)
+const total = ref(0)
+const pageSize = ref(5)
 
 function listTodos() {
-  list().then(response => {
-    todos.value = response.data.data
+  list({
+    page: page.value,
+    pageSize: pageSize.value,
+  }).then(response => {
+    console.log(response.data)
+    todos.value = response.data.data.list
+    total.value = response.data.data.total
   })
 }
 
@@ -173,6 +206,17 @@ function deleteTodo(index: number) {
 
 listTodos()
 
+const handleSizeChange = (val: number) => {
+  pageSize.value = val
+  listTodos()
+}
+
+const handleCurrentChange = (val: number) => {
+  page.value = val
+  listTodos()
+}
+
+
 function getStatusLabel(status: string) {
   if (status === 'Y') {
     return '已完成';
@@ -187,13 +231,6 @@ function getStatusTagType(status: string) {
   return status === 'Y' ? 'success' : 'danger'; // 根据状态选择不同的标签类型
 }
 
-function tableRowClassName({row}) {
-  if (row.status === "Y") {
-    return "green"
-  } else {
-    return "red"
-  }
-}
 
 function formatDateTime() {
   const currentDate = new Date();

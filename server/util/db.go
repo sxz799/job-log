@@ -6,7 +6,7 @@ import (
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"log"
-	"todo-demo/model"
+	"todo-demo/model/entity"
 )
 
 var DB *gorm.DB
@@ -36,7 +36,7 @@ func InitDB() {
 }
 
 func InitDBTables() {
-	err := DB.AutoMigrate(model.Todo{})
+	err := DB.AutoMigrate(entity.Todo{})
 	if err != nil {
 		log.Println("Todo表创建失败")
 	}

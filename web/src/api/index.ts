@@ -1,25 +1,43 @@
 import request from '../utils/request'
 
 
-export function list(){
-    return request.get("/api/todo/list")
+export const list = (params: {}) => {
+    return request({
+        url: "/api/todo/list",
+        method: "get",
+        params
+    })
+
 }
 
-export function add(data:{}){
-    return request.post("/api/todo/", data)
+export const add = (data: {}) => {
+    return request({
+        url: "/api/todo/",
+        method: "post",
+        data
+    })
 }
 
-export function update(id:number,data:{}){
-    return request.put("/api/todo/"+id, data)
+export const update = (id: number, data: {}) => {
+    return request({
+        url: "/api/todo/" + id,
+        method: "put",
+        data
+    })
 }
 
-export function del(id:number){
-    return request.delete("/api/todo/" + id)
+export const del = (id: number) => {
+    return request({
+        url: "/api/todo/" + id,
+        method: "delete",
+    })
 }
 
-
-export function get(id:number){
-    return request.get("/api/todo/" + id)
+export const get = (id: number) => {
+    return request({
+        url: "/api/todo/" + id,
+        method: "get",
+    })
 }
 
 
