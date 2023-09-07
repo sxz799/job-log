@@ -130,9 +130,9 @@ function listTodos() {
     page: page.value,
     pageSize: pageSize.value,
   }).then(response => {
-    console.log(response.data)
-    todos.value = response.data.data.list
-    total.value = response.data.data.total
+    console.log(response)
+    todos.value = response.data.list
+    total.value = response.data.total
   })
 }
 
@@ -144,11 +144,11 @@ function addTodo() {
   add({
     content: newTodo.value
   }).then(response => {
-    if (response.data.success) {
+    if (response.success) {
       listTodos()
-      ElMessage.success(response.data.message)
+      ElMessage.success(response.message)
     } else {
-      ElMessage.error(response.data.message)
+      ElMessage.error(response.message)
     }
   })
 }
@@ -156,11 +156,11 @@ function addTodo() {
 function updateTodo(data: Todo) {
   data.update_at = formatDateTime()
   update(data.id, data).then(response => {
-    if (response.data.success) {
+    if (response.success) {
       listTodos()
-      ElMessage.success(response.data.message)
+      ElMessage.success(response.message)
     } else {
-      ElMessage.error(response.data.message)
+      ElMessage.error(response.message)
     }
   })
 }
@@ -169,11 +169,11 @@ function finishTodo(data: Todo) {
   data.status = 'Y'
   data.finish_at = formatDateTime()
   update(data.id, data).then(response => {
-    if (response.data.success) {
+    if (response.success) {
       listTodos()
-      ElMessage.success(response.data.message)
+      ElMessage.success(response.message)
     } else {
-      ElMessage.error(response.data.message)
+      ElMessage.error(response.message)
     }
   })
 }
@@ -182,22 +182,22 @@ function unfinishTodo(data: Todo) {
   data.status = 'N'
   data.finish_at = ' '
   update(data.id, data).then(response => {
-    if (response.data.success) {
+    if (response.success) {
       listTodos()
-      ElMessage.success(response.data.message)
+      ElMessage.success(response.message)
     } else {
-      ElMessage.error(response.data.message)
+      ElMessage.error(response.message)
     }
   })
 }
 
 function deleteTodo(index: number) {
   del(index).then(response => {
-    if (response.data.success) {
+    if (response.success) {
       listTodos()
-      ElMessage.success(response.data.message)
+      ElMessage.success(response.message)
     } else {
-      ElMessage.error(response.data.message)
+      ElMessage.error(response.message)
     }
 
   })
