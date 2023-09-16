@@ -1,103 +1,119 @@
 <template>
   <el-row :gutter="24">
-    <el-col :span="4" :xs="0"/>
-    <el-col :span="16" :xs="24">
+
+    <el-col :span="6" :xs="0"/>
+    <el-col :span="12" :xs="24">
       <el-container>
-        <el-header></el-header>
-        <el-main>
-          <el-row >
-            <el-col :span="1" :xs="0"/>
-            <el-col :span="20" :xs="18">
+        <el-header/>
+        <el-space direction="vertical" :fill="true">
+          <el-descriptions title="Todo List Demo">
+            <el-descriptions-item label="作者">sxz799</el-descriptions-item>
+
+            <el-descriptions-item label="后端">
+              <el-tag>golang + gin + gorm + sqlite</el-tag>
+            </el-descriptions-item>
+            <el-descriptions-item label="前端">
+              <el-tag type="success">vue3 + vite + element plus</el-tag>
+
+            </el-descriptions-item>
+            <el-descriptions-item label="Github">
+              https://github.com/sxz799/todo-demo
+            </el-descriptions-item>
+          </el-descriptions>
+        <el-row :gutter="10">
+          <el-col :span="21" :xs="18">
+            <el-input
+                :resize="'none'"
+                type="textarea"
+                :autosize="{ minRows: 2, maxRows: 6 }"
+                v-model="newTodo"
+                placeholder="添加待办事项... "
+            ></el-input>
+          </el-col>
+          <el-col :span="3" :xs="6"
+                  style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+            <el-button
+                size="large"
+                :auto-insert-space="true"
+                @click="addTodo"
+                type="primary">添加
+            </el-button>
+          </el-col>
+        </el-row>
+        <el-table
+            :data="todos"
+            border
+            style="width: 100%"
+        >
+          <el-table-column prop="id" label="序号" width="60">
+            <template #default="scope">
+              <el-tag round size="small" :type="getStatusTagType(scope.row.status)">
+                {{ scope.row.id }}
+              </el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="content" label="内容">
+            <template #default="scope">
               <el-input
                   :resize="'none'"
                   type="textarea"
-                  :autosize="{ minRows: 2, maxRows: 6 }"
-                  v-model="newTodo"
-                  placeholder="添加待办事项... "
+                  :autosize="{ minRows: 1, maxRows: 6 }"
+                  v-model="scope.row.content"
+                  @blur="updateTodo(scope.row)"
               ></el-input>
-            </el-col>
-            <el-col :span="2" :xs="6" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
-              <el-button
-                  size="large"
-                  :auto-insert-space="true"
-                  @click="addTodo"
-                  type="primary">添加</el-button>
-            </el-col>
-            <el-col :span="1" :xs="0"/>
-          </el-row>
-          <el-divider></el-divider>
-          <el-table
-              :data="todos"
-              style="width: 100%"
-          >
-            <el-table-column prop="id" label="序号" width="60">
-              <template #default="scope">
-                <el-tag round size="small" :type="getStatusTagType(scope.row.status)">
-                  {{ scope.row.id }}
-                </el-tag>
-              </template>
-            </el-table-column>
-            <el-table-column prop="content" label="内容">
-              <template #default="scope">
-                <el-input
-                    :resize="'none'"
-                    type="textarea"
-                    :autosize="{ minRows: 1, maxRows: 6 }"
-                    v-model="scope.row.content"
-                    @blur="updateTodo(scope.row)"
-                ></el-input>
-              </template>
-            </el-table-column>
-            <el-table-column v-if="false" prop="status" label="状态" width="90">
-              <template #default="scope">
-                <el-tag round size="large" :type="getStatusTagType(scope.row.status)">
-                  {{ getStatusLabel(scope.row.status) }}
-                </el-tag>
-              </template>
-            </el-table-column>
-            <el-table-column v-if="false" prop="create_at" label="创建时间" width="170"/>
-            <el-table-column v-if="false" prop="finish_at" label="完成时间" width="170"/>
-            <el-table-column v-if="false" prop="update_at" label="更新时间" width="180"/>
-            <el-table-column label="操作" width="120">
-              <template #default="scope">
-                <el-button v-if="scope.row.status==='N'" type="primary"
-                           @click="finishTodo(scope.row)" :icon="Check" circle>
-                </el-button>
-                <el-button v-if="scope.row.status==='Y'" type="warning"
-                           @click="unfinishTodo(scope.row)" :icon="RefreshLeft" circle>
-                </el-button>
-                <el-popconfirm
-                    confirm-button-text="确定"
-                    cancel-button-text="取消"
-                    title="确定要删除吗?"
-                    @confirm="deleteTodo(scope.row.id)"
-                >
-                  <template #reference>
-                    <el-button type="danger" circle :icon="Delete"></el-button>
-                  </template>
-                </el-popconfirm>
+            </template>
+          </el-table-column>
+          <el-table-column v-if="false" prop="status" label="状态" width="90">
+            <template #default="scope">
+              <el-tag round size="large" :type="getStatusTagType(scope.row.status)">
+                {{ getStatusLabel(scope.row.status) }}
+              </el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column v-if="false" prop="create_at" label="创建时间" width="170"/>
+          <el-table-column v-if="false" prop="finish_at" label="完成时间" width="170"/>
+          <el-table-column v-if="false" prop="update_at" label="更新时间" width="180"/>
+          <el-table-column label="操作" width="120">
+            <template #default="scope">
+              <el-button v-if="scope.row.status==='N'" type="primary"
+                         @click="finishTodo(scope.row)" :icon="Check" circle>
+              </el-button>
+              <el-button v-if="scope.row.status==='Y'" type="warning"
+                         @click="unfinishTodo(scope.row)" :icon="RefreshLeft" circle>
+              </el-button>
+              <el-popconfirm
+                  confirm-button-text="确定"
+                  cancel-button-text="取消"
+                  title="确定要删除吗?"
+                  @confirm="deleteTodo(scope.row.id)"
+              >
+                <template #reference>
+                  <el-button type="danger" circle :icon="Delete"></el-button>
+                </template>
+              </el-popconfirm>
 
-              </template>
-            </el-table-column>
-          </el-table>
-          <el-pagination
-              small
-              :style="{'justify-content':'center'}"
-              :background="true"
-              :hide-on-single-page="false"
-              :current-page="page"
-              :page-size="pageSize"
-              :page-sizes="[5, 10, 30, 50]"
-              :total="total"
-              layout=" sizes, prev, pager, next"
-              @current-change="handleCurrentChange"
-              @size-change="handleSizeChange"
-          />
-        </el-main>
-        <el-footer></el-footer>
+            </template>
+          </el-table-column>
+        </el-table>
+        <el-pagination
+            small
+            :style="{'justify-content':'center'}"
+            :background="true"
+            :hide-on-single-page="false"
+            :current-page="page"
+            :page-size="pageSize"
+            :page-sizes="[5, 10, 30, 50]"
+            :total="total"
+            layout=" sizes, prev, pager, next"
+            @current-change="handleCurrentChange"
+            @size-change="handleSizeChange"
+        />
+        </el-space>
+        <el-footer/>
       </el-container>
     </el-col>
-    <el-col :span="4" :xs="0"/>
+    <el-col :span="6" :xs="0"/>
+
   </el-row>
 
 
@@ -130,7 +146,6 @@ function listTodos() {
     page: page.value,
     pageSize: pageSize.value,
   }).then(response => {
-    console.log(response)
     todos.value = response.data.list
     total.value = response.data.total
   })
