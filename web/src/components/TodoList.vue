@@ -4,7 +4,7 @@
 
       <el-container>
         <el-space direction="vertical" :fill="true">
-          <el-descriptions title="待办事项">
+          <el-descriptions >
             <el-descriptions-item label="作者">sxz799</el-descriptions-item>
 
             <el-descriptions-item label="后端">

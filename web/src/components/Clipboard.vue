@@ -3,13 +3,8 @@
     <el-space direction="vertical" :fill="true">
 
         <el-row>
-          <el-col :span="6">
-            <el-image :src="clipLog"/>
-          </el-col>
-
           <el-col :span="18">
-
-            <el-descriptions title="工作日志">
+            <el-descriptions>
               <el-descriptions-item label="作者">sxz799</el-descriptions-item>
 
               <el-descriptions-item label="后端">
@@ -98,7 +93,6 @@
 <script setup lang="ts">
 import {ref, onMounted, onBeforeUnmount} from 'vue';
 import {ElMessage} from 'element-plus';
-import clipLog from '../assets/clipLogo.png'
 import useClipboard from 'vue-clipboard3';
 import {CloseBold, CopyDocument, InfoFilled} from '@element-plus/icons-vue';
 import {list, get, update, del} from '../api/clipboard';
