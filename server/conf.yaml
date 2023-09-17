@@ -6,6 +6,6 @@ db :
   port : 3306
   host : 177.7.0.13
 server :
-  port : 4000
+  port : 6000
   ginMode : debug # debug || release || test
 

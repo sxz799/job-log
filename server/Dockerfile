@@ -2,8 +2,6 @@ FROM golang:alpine as builder
 
 WORKDIR /go/src/github.com/sxz799/job-log/server
 
-
-
 COPY . .
 
 RUN go env -w GO111MODULE=on \
@@ -22,5 +20,5 @@ COPY --from=0 /go/src/github.com/sxz799/job-log/server/server ./
 COPY --from=0 /go/src/github.com/sxz799/job-log/server/conf.yaml ./
 
 
-EXPOSE 4000
+EXPOSE 6000
 ENTRYPOINT ./server
