@@ -15,7 +15,7 @@
 
             </el-descriptions-item>
             <el-descriptions-item label="Github">
-              https://github.com/sxz799/todo-demo
+              https://github.com/sxz799/job-log
             </el-descriptions-item>
           </el-descriptions>
         <el-row :gutter="10">

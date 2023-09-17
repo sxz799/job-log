@@ -16,7 +16,7 @@
               </el-descriptions-item>
 
               <el-descriptions-item label="Desc">
-                每3秒同步一次数据
+                每3秒同步一次数据,每天凌晨自动保存最新数据
               </el-descriptions-item>
             </el-descriptions>
           </el-col>
@@ -27,7 +27,11 @@
         <template #header>
           <div class="card-header">
             <el-button-group>
+              <el-button size="small" type="success" @click="addClipboardData" :icon="Plus" round>记录</el-button>
+            </el-button-group>
+            <el-button-group>
               <el-button size="small" type="primary" @click="copy" :icon="CopyDocument" round>复制</el-button>
+
               <el-button size="small" type="danger" @click="reset" :icon="CloseBold" round>清空</el-button>
             </el-button-group>
           </div>
@@ -54,8 +58,8 @@
         </el-table-column>
         <el-table-column fixed="right" :warp="false" width="120" label="操作">
           <template #default="scope">
-            <el-button-group>
-              <el-button type="primary" size="small" @click="handleCopy(scope.row)">复制</el-button>
+
+              <el-button type="primary"  :icon="CopyDocument" circle @click="handleCopy(scope.row)"></el-button>
               <el-popconfirm
                   confirm-button-text="是"
                   cancel-button-text="否"
@@ -64,10 +68,10 @@
                   @confirm="handleDelete(scope.row)"
               >
                 <template #reference>
-                  <el-button type="danger" size="small">删除</el-button>
+                  <el-button type="danger" :icon="Delete" circle ></el-button>
                 </template>
               </el-popconfirm>
-            </el-button-group>
+
           </template>
         </el-table-column>
       </el-table>
@@ -94,8 +98,8 @@
 import {ref, onMounted, onBeforeUnmount} from 'vue';
 import {ElMessage} from 'element-plus';
 import useClipboard from 'vue-clipboard3';
-import {CloseBold, CopyDocument, InfoFilled} from '@element-plus/icons-vue';
-import {list, get, update, del} from '../api/clipboard';
+import {CloseBold, CopyDocument, Delete, InfoFilled, Plus} from '@element-plus/icons-vue';
+import {add,list, get, update, del} from '../api/clipboard';
 
 const {toClipboard} = useClipboard();
 
@@ -126,6 +130,21 @@ function listClipboardLogs() {
   }).then(response => {
     logs.value = response.data.list;
     total.value = response.data.total
+  });
+}
+
+function addClipboardData() {
+  if(content.value===''){
+    ElMessage.info('当前内容为空!');
+    return
+  }
+  add({content:content.value}).then(response => {
+    if (response.success) {
+      ElMessage.success(response.message);
+      listClipboardLogs()
+    } else {
+      ElMessage.error(response.message);
+    }
   });
 }
 
@@ -208,5 +227,9 @@ const handleCurrentChange = (val: number) => {
 </script>
 
 <style scoped>
-
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 </style>
