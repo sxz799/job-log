@@ -5,9 +5,9 @@
       <el-card class="box-card">
         <template #header>
           <div class="card-header">
-            <el-button-group>
-              <el-button size="small" type="success" @click="addClipboardData" :icon="Plus" round>记录</el-button>
-            </el-button-group>
+
+            <el-button size="small" type="success" @click="addClipboardData" :icon="Plus" round>记 录</el-button>
+
             <el-button-group>
               <el-button size="small" type="primary" @click="copy" :icon="CopyDocument" round>复制</el-button>
 
