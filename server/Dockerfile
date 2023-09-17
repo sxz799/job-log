@@ -1,6 +1,6 @@
 FROM golang:alpine as builder
 
-WORKDIR /go/src/github.com/sxz799/todo-demo/server
+WORKDIR /go/src/github.com/sxz799/job-log/server
 
 
 
@@ -16,10 +16,10 @@ RUN go env -w GO111MODULE=on \
 FROM alpine:latest
 
 
-WORKDIR /go/src/github.com/sxz799/todo-demo/server
+WORKDIR /go/src/github.com/sxz799/job-log/server
 
-COPY --from=0 /go/src/github.com/sxz799/todo-demo/server/server ./
-COPY --from=0 /go/src/github.com/sxz799/todo-demo/server/conf.yaml ./
+COPY --from=0 /go/src/github.com/sxz799/job-log/server/server ./
+COPY --from=0 /go/src/github.com/sxz799/job-log/server/conf.yaml ./
 
 
 EXPOSE 4000

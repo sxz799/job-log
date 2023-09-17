@@ -2,9 +2,11 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
-	"todo-demo/router/Todo"
+	"job-log/router/Clipboard"
+	"job-log/router/Todo"
 )
 
 func RegRouter(e *gin.Engine) {
 	Todo.Todo(e)
+	Clipboard.Clipboard(e)
 }

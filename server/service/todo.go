@@ -1,11 +1,11 @@
 package service
 
 import (
+	"job-log/model/common/request"
+	"job-log/model/common/response"
+	"job-log/model/entity"
+	"job-log/util"
 	"time"
-	"todo-demo/model/common/request"
-	"todo-demo/model/common/response"
-	"todo-demo/model/entity"
-	"todo-demo/util"
 )
 
 type TodoService struct {

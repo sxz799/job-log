@@ -3,10 +3,10 @@ package main
 import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"job-log/config"
+	"job-log/router"
+	"job-log/util"
 	"log"
-	"todo-demo/config"
-	"todo-demo/router"
-	"todo-demo/util"
 )
 
 func main() {
@@ -21,6 +21,11 @@ func main() {
 	r.Use(cors.Default())
 
 	router.RegRouter(r)
+
+	//TODO: 定时任务 晚上自动添加记录
+	//c := cron.New()
+	//c.AddFunc("0 50 23 * *", model.AutoTagImportant)
+	//c.Start()
 
 	err := r.Run(":" + config.ServerPort)
 	if err != nil {

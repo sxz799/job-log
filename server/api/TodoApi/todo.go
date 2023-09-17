@@ -1,12 +1,12 @@
-package api
+package TodoApi
 
 import (
 	"github.com/gin-gonic/gin"
+	"job-log/model/common/request"
+	"job-log/model/common/response"
+	"job-log/model/entity"
+	"job-log/service"
 	"strconv"
-	"todo-demo/model/common/request"
-	"todo-demo/model/common/response"
-	"todo-demo/model/entity"
-	"todo-demo/service"
 )
 
 var ts service.TodoService

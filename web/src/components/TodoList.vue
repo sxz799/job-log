@@ -1,12 +1,10 @@
 <template>
-  <el-row :gutter="24">
 
-    <el-col :span="6" :xs="0"/>
-    <el-col :span="12" :xs="24">
+
+
       <el-container>
-        <el-header/>
         <el-space direction="vertical" :fill="true">
-          <el-descriptions title="Todo List Demo">
+          <el-descriptions title="待办事项">
             <el-descriptions-item label="作者">sxz799</el-descriptions-item>
 
             <el-descriptions-item label="后端">
@@ -111,17 +109,15 @@
         </el-space>
         <el-footer/>
       </el-container>
-    </el-col>
-    <el-col :span="6" :xs="0"/>
 
-  </el-row>
+
 
 
 </template>
 
 <script setup lang="ts">
 
-import {list, add, del, update} from "../api";
+import {list, add, del, update} from "../api/todo";
 import {ref} from "vue";
 import {Check, Delete, RefreshLeft} from '@element-plus/icons-vue'
 import {ElMessage} from "element-plus";

@@ -1,6 +1,6 @@
 db :
   sqlType : sqlite  # mysql || sqlite
-  database: todo
+  database: job_log
   username : root
   password : 123456
   port : 3306

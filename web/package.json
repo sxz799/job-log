@@ -1,5 +1,5 @@
 {
-  "name": "todo-demo",
+  "name": "job-log",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,9 +9,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@element-plus/icons-vue": "^2.1.0",
     "axios": "^1.4.0",
     "element-plus": "^2.3.9",
-    "vue": "^3.3.4"
+    "vue": "^3.3.4",
+    "vue-clipboard3": "^2.0.0"
   },
   "devDependencies": {
     "@types/node": "^20.5.1",

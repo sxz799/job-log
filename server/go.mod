@@ -1,4 +1,4 @@
-module todo-demo
+module job-log
 
 go 1.20
 
