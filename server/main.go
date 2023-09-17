@@ -3,10 +3,13 @@ package main
 import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/robfig/cron"
 	"job-log/config"
 	"job-log/router"
+	"job-log/service"
 	"job-log/util"
 	"log"
+	"os"
 )
 
 func main() {
@@ -18,17 +21,31 @@ func main() {
 	gin.SetMode(config.GinMode)
 	r := gin.Default()
 
+	_, err := os.Stat("dist")
+	if err == nil {
+		r.LoadHTMLGlob("dist/index.html")
+		r.Static("/dist", "dist")
+		r.GET("/", func(context *gin.Context) {
+			context.HTML(200, "index.html", "")
+		})
+		log.Println("已开启前后端整合模式！")
+	}
+
 	r.Use(cors.Default())
 
 	router.RegRouter(r)
 
-	//TODO: 定时任务 晚上自动添加记录
-	//c := cron.New()
-	//c.AddFunc("0 50 23 * *", model.AutoTagImportant)
-	//c.Start()
+	c := cron.New()
+	clipboardService := service.ClipboardService{}
+	c.AddFunc("0 50 23 * *", func() {
+		_ = clipboardService.Add()
+	})
+	c.Start()
 
-	err := r.Run(":" + config.ServerPort)
+	log.Println("定时任务启动成功,服务启动成功,当前使用端口：", config.ServerPort)
+	err = r.RunTLS(":"+config.ServerPort, "cert/pem.pem", "cert/key.key")
 	if err != nil {
-		return
+		log.Println("未找到证书文件，以http运行！")
+		r.Run(":" + config.ServerPort)
 	}
 }
