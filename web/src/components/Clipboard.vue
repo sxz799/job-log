@@ -1,26 +1,5 @@
 <template>
-  <el-container>
-    <el-space direction="vertical" :fill="true">
 
-        <el-row>
-          <el-col :span="18">
-            <el-descriptions>
-              <el-descriptions-item label="作者">sxz799</el-descriptions-item>
-
-              <el-descriptions-item label="后端">
-                <el-tag>golang + gin + gorm + sqlite</el-tag>
-              </el-descriptions-item>
-              <el-descriptions-item label="前端">
-                <el-tag type="success">vue3 + vite + element plus</el-tag>
-
-              </el-descriptions-item>
-
-              <el-descriptions-item label="Desc">
-                每3秒同步一次数据,每天凌晨自动保存最新数据
-              </el-descriptions-item>
-            </el-descriptions>
-          </el-col>
-        </el-row>
 
 
       <el-card class="box-card">
@@ -45,6 +24,7 @@
           />
         </div>
       </el-card>
+      <br>
       <el-table border :data="logs">
         <el-table-column fixed="left" width="90" prop="create_at" label="日期">
           <template #default="{ row }">
@@ -75,7 +55,7 @@
           </template>
         </el-table-column>
       </el-table>
-
+      <br>
       <el-pagination
           small
           :style="{'justify-content':'center'}"
@@ -89,9 +69,9 @@
           @current-change="handleCurrentChange"
           @size-change="handleSizeChange"
       />
-    </el-space>
-    <el-footer/>
-  </el-container>
+
+
+
 </template>
 
 <script setup lang="ts">
