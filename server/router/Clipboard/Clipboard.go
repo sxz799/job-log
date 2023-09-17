@@ -12,6 +12,5 @@ func Clipboard(e *gin.Engine) {
 		g.PUT("/", ClipboardApi.Update)
 		g.GET("/", ClipboardApi.Get)
 		g.DELETE("/:id", ClipboardApi.Del)
-
 	}
 }

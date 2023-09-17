@@ -37,7 +37,7 @@ func main() {
 
 	c := cron.New()
 	clipboardService := service.ClipboardService{}
-	c.AddFunc("0 50 23 * *", func() {
+	_ = c.AddFunc("0 50 23 * *", func() {
 		_ = clipboardService.Add()
 	})
 	c.Start()
@@ -46,6 +46,6 @@ func main() {
 	err = r.RunTLS(":"+config.ServerPort, "cert/pem.pem", "cert/key.key")
 	if err != nil {
 		log.Println("未找到证书文件，以http运行！")
-		r.Run(":" + config.ServerPort)
+		_ = r.Run(":" + config.ServerPort)
 	}
 }

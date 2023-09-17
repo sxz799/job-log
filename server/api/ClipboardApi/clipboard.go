@@ -34,9 +34,7 @@ func Update(c *gin.Context) {
 		return
 	}
 	cs.Update(clip)
-	cs.Add()
 	response.OkWithMessage("更新成功", c)
-
 }
 
 func Get(c *gin.Context) {
