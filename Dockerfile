@@ -24,7 +24,7 @@ WORKDIR /go/src/github.com/sxz799/job-log/web
 COPY ./web/ .
 
 
-RUN yarn build
+RUN npm build
 
 
 FROM alpine:latest
