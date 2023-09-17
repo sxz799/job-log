@@ -30,9 +30,12 @@ func (ts *ClipboardService) List(pi request.PageInfo) (response.PageResult, erro
 		PageSize: pi.PageSize}, err
 }
 
-func (ts *ClipboardService) Add() (err error) {
+func (ts *ClipboardService) Add(c entity.Clipboard) (err error) {
 	var clipLog = entity.ClipboardLog{}
 	clipLog.Content = currClip.Content
+	if c.Content != "" {
+		clipLog.Content = c.Content
+	}
 	clipLog.CreateAt = time.Now().Format(time.DateTime)
 	err = util.DB.Create(&clipLog).Error
 	return

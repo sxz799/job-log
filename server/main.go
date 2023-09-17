@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/robfig/cron"
 	"job-log/config"
+	"job-log/model/entity"
 	"job-log/router"
 	"job-log/service"
 	"job-log/util"
@@ -38,7 +39,7 @@ func main() {
 	c := cron.New()
 	clipboardService := service.ClipboardService{}
 	_ = c.AddFunc("0 50 23 * *", func() {
-		_ = clipboardService.Add()
+		_ = clipboardService.Add(entity.Clipboard{})
 	})
 	c.Start()
 

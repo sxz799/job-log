@@ -9,6 +9,7 @@ func Clipboard(e *gin.Engine) {
 	g := e.Group("/api/clipboard")
 	{
 		g.GET("/list", ClipboardApi.List)
+		g.POST("/", ClipboardApi.Add)
 		g.PUT("/", ClipboardApi.Update)
 		g.GET("/", ClipboardApi.Get)
 		g.DELETE("/:id", ClipboardApi.Del)

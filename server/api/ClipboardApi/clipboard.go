@@ -25,6 +25,20 @@ func List(c *gin.Context) {
 	}
 }
 
+func Add(c *gin.Context) {
+	var clip entity.Clipboard
+	err := c.ShouldBind(&clip)
+	if err != nil {
+		response.FailWithMessage("参数有误", c)
+		return
+	}
+	if err := cs.Add(clip); err == nil {
+		response.OkWithMessage("添加成功", c)
+	} else {
+		response.Fail(c)
+	}
+}
+
 func Update(c *gin.Context) {
 	var clip entity.Clipboard
 	err := c.ShouldBind(&clip)
