@@ -55,7 +55,7 @@
     <el-table-column v-if="false" prop="create_at" label="创建时间" width="170"/>
     <el-table-column v-if="false" prop="finish_at" label="完成时间" width="170"/>
     <el-table-column v-if="false" prop="update_at" label="更新时间" width="180"/>
-    <el-table-column label="操作" width="120">
+    <el-table-column label="操作" width="105">
       <template #default="scope">
         <el-button v-if="scope.row.status==='N'" type="primary"
                    @click="finishTodo(scope.row)" :icon="Check" circle>

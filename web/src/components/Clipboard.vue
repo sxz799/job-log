@@ -36,7 +36,7 @@
             <div v-html="row.content.replace(/\n/g, '<br/>')"></div>
           </template>
         </el-table-column>
-        <el-table-column fixed="right" :warp="false" width="120" label="操作">
+        <el-table-column fixed="right" :warp="false" width="105" label="操作">
           <template #default="scope">
 
               <el-button type="primary"  :icon="CopyDocument" circle @click="handleCopy(scope.row)"></el-button>

@@ -9,7 +9,7 @@ export default (({ mode }) => {
       port: 6060,
       proxy: {
         '/dev-api': {
-          target: "http://127.0.0.1:6000",
+          target: "https://ddns.sxz799.xyz:6000",
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/dev-api/, '')
         },
