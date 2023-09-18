@@ -1,5 +1,5 @@
 db :
-  sqlType : sqlite  # mysql || sqlite
+  sqlType : mysql  # mysql || sqlite
   database: job_log
   username : root
   password : 123456

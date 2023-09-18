@@ -26,6 +26,8 @@ COPY ./web/ .
 RUN rm vite.config.ts
 RUN mv vite.config-docker.ts vite.config.ts
 
+RUN echo 'VITE_BASE_PATH=/' > .env.production
+
 
 RUN yarn && yarn build
 

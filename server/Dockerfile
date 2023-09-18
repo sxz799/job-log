@@ -19,5 +19,5 @@ COPY --from=0 /go/src/github.com/sxz799/job-log/server/server ./
 COPY --from=0 /go/src/github.com/sxz799/job-log/server/conf.yaml ./
 
 
-EXPOSE 6000
+EXPOSE 3000
 ENTRYPOINT ./server

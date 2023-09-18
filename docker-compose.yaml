@@ -16,7 +16,7 @@ services:
     build:
       context: ./web
       dockerfile: ./Dockerfile
-    container_name: todo-web
+    container_name: job-log-web
     restart: always
     ports:
       - '80:80'
@@ -31,7 +31,7 @@ services:
     build:
       context: ./server
       dockerfile: ./Dockerfile
-    container_name: todo-server
+    container_name: job-log-server
     restart: always
     ports:
       - '3000:3000'
@@ -44,15 +44,15 @@ services:
         ipv4_address: 177.7.0.12
 
   mysql:
-    image: mysql:8.0.32       # 如果您是 arm64 架构：如 MacOS 的 M1，请修改镜像为 image: mysql/mysql-server:8.0.21
-    container_name: todo-mysql
+    image: mysql:8.0.32      # 如果您是 arm64 架构：如 MacOS 的 M1，请修改镜像为 image: mysql/mysql-server:8.0.21
+    container_name: job-mysql
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci #设置utf8字符集
     restart: always
     ports:
       - "3306:3306"  # host物理直接映射端口为3306
     environment:
       MYSQL_ROOT_PASSWORD: '123456' # root管理员用户密码
-      MYSQL_DATABASE: 'todo' # 初始化启动时要创建的数据库的名称
+      MYSQL_DATABASE: 'job_log' # 初始化启动时要创建的数据库的名称
       TZ: Asia/Shanghai
     volumes:
       - mysql:/var/lib/mysql
