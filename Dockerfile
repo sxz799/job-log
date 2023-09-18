@@ -48,7 +48,7 @@ COPY --from=1 /go/src/github.com/sxz799/job-log/web/dist/ ./dist
 RUN mkdir "cert"
 RUN mkdir "conf"
 
-EXPOSE 6000
+EXPOSE 3000
 
 # 运行应用程序
 CMD ["./app"]
