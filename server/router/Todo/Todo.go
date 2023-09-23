@@ -13,6 +13,5 @@ func Todo(e *gin.Engine) {
 		g.PUT("/:id", TodoApi.Update)
 		g.GET("/:id", TodoApi.Get)
 		g.DELETE("/:id", TodoApi.Del)
-
 	}
 }

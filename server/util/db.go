@@ -33,9 +33,10 @@ func InitDB() {
 			log.Panicln("sqlite数据库连接失败。", err)
 		}
 	}
+	initDBTables()
 }
 
-func InitDBTables() {
+func initDBTables() {
 	err := DB.AutoMigrate(entity.Todo{})
 	if err != nil {
 		log.Println("Todo表创建失败")
