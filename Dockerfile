@@ -1,5 +1,5 @@
 # 使用官方 Golang 镜像作为基础镜像
-FROM golang:latest as builder
+FROM golang:1.20 as builder
 
 # 设置工作目录
 WORKDIR /go/src/github.com/sxz799/job-log/server
