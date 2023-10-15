@@ -1,4 +1,4 @@
-FROM golang:latest as builder
+FROM golang:1.20-alpine as builder
 
 WORKDIR /go/src/github.com/sxz799/job-log/server
 
