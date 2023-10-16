@@ -37,7 +37,7 @@ func (ts *ClipboardService) Add(c entity.Clipboard) (err error) {
 		clipLog.Content = c.Content
 	}
 	clipLog.CreateAt = time.Now().Format(time.DateTime)
-	err = util.DB.FirstOrCreate(&clipLog).Error
+	err = util.DB.Debug().Where(entity.ClipboardLog{Content: clipLog.Content}).FirstOrCreate(&clipLog).Error
 	return
 }
 
