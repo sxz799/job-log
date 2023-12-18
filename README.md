@@ -11,5 +11,5 @@ Vue3 vite element+
 
 ### 数据库
 
-sqlite3 mysql
+sqlite3 mysql 
 
