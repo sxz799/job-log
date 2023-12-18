@@ -11,7 +11,11 @@ COPY ./server/ .
 
 
 # 编译应用程序
-RUN go build -o app main.go
+RUN go env -w GO111MODULE=on \
+    && go env -w CGO_ENABLED=1 \
+    && go env \
+    && go mod tidy \
+    && go build -o app .
 
 
 FROM node:16
