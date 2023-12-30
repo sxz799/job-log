@@ -1,9 +1,12 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
+
+
 export default (({ mode }) => {
 
   return defineConfig({
+    //base:'/dist/',
     plugins: [vue()],
     server: {
       port: 6060,

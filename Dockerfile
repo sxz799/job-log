@@ -21,8 +21,7 @@ FROM node:16
 WORKDIR /go/src/github.com/sxz799/job-log/web
 COPY ./web/ .
 
-RUN rm vite.config.ts
-RUN mv vite.config-docker.ts vite.config.ts
+RUN sed -i '9s|//||' vite.config.ts
 
 RUN echo 'VITE_BASE_PATH=/' > .env.production
 

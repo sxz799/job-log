@@ -3,7 +3,7 @@ package util
 import (
 	"github.com/spf13/viper"
 	"gorm.io/driver/mysql"
-	"gorm.io/driver/sqlite"
+	"github.com/glebarez/sqlite"
 	"gorm.io/gorm"
 	"job-log/model/entity"
 	"log"
