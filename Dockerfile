@@ -1,51 +1,38 @@
-# 使用官方 Golang 镜像作为基础镜像
-FROM golang:1.20-alpine as builder
+# 前端-缓存
+FROM node:20 AS web-cached
+WORKDIR /job-log/web
+COPY ./web/package.json ./
+RUN yarn install
 
-# 设置工作目录
-WORKDIR /go/src/github.com/sxz799/job-log/server
+# 前端-编译
+FROM web-cached AS web-builder
+COPY ./web/ ./
+RUN yarn build
 
-# 将应用的代码复制到容器中
-COPY ./server/ .
+# 后端-缓存
+FROM golang:1.23.4-alpine AS server-cached
+WORKDIR /job-log/server
+COPY ./server/go.mod ./server/go.sum ./
+RUN go env -w GOPROXY=https://goproxy.cn,direct && \
+    go mod tidy  && \
+    go mod download
 
+# 后端-编译   
+FROM server-cached AS server-builder
+COPY ./server/ ./
+COPY --from=web-builder /job-log/web/dist/ ./dist
+RUN go build -ldflags="-s -w" -o app .
 
-# 编译应用程序
-RUN go env -w GO111MODULE=on \
-    && go env \
-    && go mod tidy \
-    && go build -o app .
-
-
-FROM node:16
-
-
-WORKDIR /go/src/github.com/sxz799/job-log/web
-COPY ./web/ .
-
-RUN sed -i '9s|//||' vite.config.ts
-
-RUN echo 'VITE_BASE_PATH=/' > .env.production
-
-
-RUN yarn && yarn build
-
-
+# alpine镜像
 FROM alpine:latest
-
 WORKDIR /home
-
 RUN apk --no-cache add bash
+RUN apk add --no-cache tzdata && \
+  cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
+  apk del tzdata && \
+  echo "Asia/Shanghai" > /etc/timezone
+COPY --from=server-builder /job-log/server/app ./
 
-RUN apk update && apk add tzdata 
-RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime 
-RUN echo "Asia/Shanghai" > /etc/timezone
-
-
-COPY --from=0 /go/src/github.com/sxz799/job-log/server/app ./
-COPY --from=0 /go/src/github.com/sxz799/job-log/server/conf.yaml ./
-COPY --from=1 /go/src/github.com/sxz799/job-log/web/dist/ ./dist
-
-RUN mkdir "cert"
-RUN mkdir "conf"
 
 EXPOSE 3000
 

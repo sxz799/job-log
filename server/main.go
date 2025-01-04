@@ -1,6 +1,7 @@
 package main
 
 import (
+	"embed"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"job-log/config"
@@ -8,8 +9,10 @@ import (
 	"job-log/router"
 	"job-log/util"
 	"log"
-	"os"
 )
+
+//go:embed dist
+var content embed.FS
 
 func main() {
 	log.Println("正在连接并初始化数据库...")
@@ -19,19 +22,11 @@ func main() {
 
 	gin.SetMode(config.GinMode)
 	r := gin.Default()
-	_, err := os.Stat("dist")
-	if err == nil {
-		r.LoadHTMLGlob("dist/index.html")
-		r.Static("/dist", "dist")
-		r.GET("/", func(context *gin.Context) {
-			context.HTML(200, "index.html", "")
-		})
-		log.Println("已开启前后端整合模式！")
-	}
 	r.Use(cors.Default())
 	router.RegRouter(r)
+	router.RegWebRouter(r, content)
 	log.Println("服务启动中,当前使用端口：", config.ServerPort)
-	err = r.RunTLS(":"+config.ServerPort, "cert/pem.pem", "cert/key.key")
+	err := r.RunTLS(":"+config.ServerPort, "cert/pem.pem", "cert/key.key")
 	if err != nil {
 		log.Println("未找到证书文件，以http运行！")
 		_ = r.Run(":" + config.ServerPort)
