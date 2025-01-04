@@ -1,4 +1,4 @@
-package ClipboardApi
+package clipboard
 
 import (
 	"github.com/gin-gonic/gin"

@@ -1,4 +1,4 @@
-package TodoApi
+package todo
 
 import (
 	"github.com/gin-gonic/gin"

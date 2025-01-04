@@ -10,14 +10,14 @@ export const list = (params: {}) => {
 }
 export const add = (data: {}) => {
     return request({
-        url: "/api/clipboard/",
+        url: "/api/clipboard",
         method: "post",
         data
     })
 }
 export const update = ( data: {}) => {
     return request({
-        url: "/api/clipboard/" ,
+        url: "/api/clipboard" ,
         method: "put",
         data
     })
@@ -32,7 +32,7 @@ export const del = (id: number) => {
 
 export const get = () => {
     return request({
-        url: "/api/clipboard/",
+        url: "/api/clipboard",
         method: "get",
     })
 }

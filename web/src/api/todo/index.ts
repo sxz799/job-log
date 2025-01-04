@@ -12,7 +12,7 @@ export const list = (params: {}) => {
 
 export const add = (data: {}) => {
     return request({
-        url: "/api/todo/",
+        url: "/api/todo",
         method: "post",
         data
     })
