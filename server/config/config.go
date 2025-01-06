@@ -14,7 +14,7 @@ var (
 func init() {
 	log.Println("正在应用配置文件...")
 	if _, err := os.Stat("conf.yaml"); os.IsNotExist(err) {
-		log.Panicln("没找到配置文件...")
+		return
 	} else {
 		viper.SetConfigFile("conf.yaml")
 	}

@@ -1,9 +1,9 @@
 package util
 
 import (
+	"github.com/glebarez/sqlite"
 	"github.com/spf13/viper"
 	"gorm.io/driver/mysql"
-	"github.com/glebarez/sqlite"
 	"gorm.io/gorm"
 	"job-log/model/entity"
 	"log"
@@ -14,6 +14,10 @@ var DB *gorm.DB
 func InitDB() {
 	sqlType := viper.GetString("db.sqlType")
 	database := viper.GetString("db.database")
+	if sqlType == "" {
+		sqlType = "sqlite"
+		database = "job-log"
+	}
 	switch sqlType {
 	case "mysql":
 		username := viper.GetString("db.username")
