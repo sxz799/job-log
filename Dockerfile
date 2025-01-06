@@ -2,7 +2,7 @@
 FROM node:20 AS web-cached
 WORKDIR /job-log/web
 COPY ./web/package.json ./
-RUN yarn install
+RUN yarn install --registry http://registry.npmmirror.com
 
 # 前端-编译
 FROM web-cached AS web-builder
@@ -34,7 +34,7 @@ RUN apk add --no-cache tzdata && \
 COPY --from=server-builder /job-log/server/app ./
 
 
-EXPOSE 3000
+EXPOSE 8080
 
 # 运行应用程序
 CMD ["./app"]
