@@ -87,7 +87,6 @@ const pageSize = ref(5)
 
 
 onMounted(() => {
-  getClipboardData();
   handleWebsocket();
   listClipboardLogs();
 });
@@ -100,19 +99,18 @@ function handleWebsocket() {
   ws.value = new WebSocket(url);
   ws.value.onopen = () => {
     console.log('ws connected');
+    getClipboardData();
   };
   ws.value.onmessage = (e) => {
     console.log('ws message', e.data);
     content.value = e.data
   };
-  ws.value.onerror = (error) => {
+  ws.value.onerror = (error: any) => {
     console.error('WebSocket error:', error);
   };
-  ws.value.onclose = (event) => {
-    console.log('WebSocket connection closed:', event);
-    // 可选：实现自动重连逻辑
+  ws.value.onclose = () => {
+    console.log('ws closed');
     setTimeout(() => {
-      console.log('Reconnecting...');
       handleWebsocket();
     }, 1000);
   };
@@ -168,12 +166,22 @@ function handleReset() {
 }
 
 function handleCopy(record: any) {
-  try {
-    toClipboard(record.content);
-    ElMessage.success('复制成功！');
-  } catch (e) {
-    ElMessage.error('复制失败！');
+  if (record.content) {
+    try {
+      toClipboard(record.content);
+      ElMessage.success('复制成功！');
+    } catch (e) {
+      ElMessage.error('复制失败！');
+    }
+  } else {
+    try {
+      toClipboard(content.value);
+      ElMessage.success('复制成功！');
+    } catch (e) {
+      ElMessage.error('复制失败！');
+    }
   }
+
 }
 
 function handleDelete(record: any) {

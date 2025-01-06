@@ -12,8 +12,8 @@ export default (({ mode }) => {
       port: 6060,
       proxy: {
         '/dev-api': {
-          // target: "https://ddns.sxz799.xyz:3000/",
-          target: "http://127.0.0.1:3000/",
+          target: "https://job-log.yumu799.cyou:8443/",
+          // target: "http://127.0.0.1:3000/",
           changeOrigin: true,
           ws: true,
           rewrite: (path) => path.replace(/^\/dev-api/, '')
