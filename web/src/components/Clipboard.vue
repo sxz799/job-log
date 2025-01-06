@@ -95,6 +95,8 @@ onMounted(() => {
 
 function handleWebsocket() {
   const url = import.meta.env.VITE_BASE_URL + '/api/clipboard/ws'
+  // 把url中的https替换为wss:// http替换为ws://
+  url.replace('https://', 'wss://').replace('http://', 'ws://')
   ws.value = new WebSocket(url);
   ws.value.onopen = () => {
     console.log('ws connected');
