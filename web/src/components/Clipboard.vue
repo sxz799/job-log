@@ -98,18 +98,18 @@ function handleWebsocket() {
   url.replace('https://', 'wss://').replace('http://', 'ws://')
   ws.value = new WebSocket(url);
   ws.value.onopen = () => {
-    console.log('ws connected');
+    console.log('ws链接成功!');
     getClipboardData();
   };
-  ws.value.onmessage = (e) => {
-    console.log('ws message', e.data);
+  ws.value.onmessage = (e: any) => {
+    console.log('ws接收消息:',e.data);
     content.value = e.data
   };
   ws.value.onerror = (error: any) => {
-    console.error('WebSocket error:', error);
+    console.error('ws发生错误:', error);
   };
   ws.value.onclose = () => {
-    console.log('ws closed');
+    console.log('ws关闭,10秒后重连!');
     setTimeout(() => {
       handleWebsocket();
     }, 1000);
@@ -195,7 +195,7 @@ function handleDelete(record: any) {
   });
 }
 
-
+// region 处理分页
 const handleSizeChange = (val: number) => {
   pageSize.value = val
   listClipboardLogs()
@@ -205,6 +205,7 @@ const handleCurrentChange = (val: number) => {
   page.value = val
   listClipboardLogs()
 }
+//endregion
 </script>
 
 <style scoped>
