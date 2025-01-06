@@ -41,11 +41,6 @@ func (ts *ClipboardService) Add(c entity.Clipboard) (err error) {
 	return
 }
 
-func (ts *ClipboardService) Update(t entity.Clipboard) {
-	currClip = t
-	return
-}
-
 func (ts *ClipboardService) Del(id int) (err error) {
 	clip := entity.ClipboardLog{
 		Id: id,
@@ -56,4 +51,9 @@ func (ts *ClipboardService) Del(id int) (err error) {
 
 func (ts *ClipboardService) Get() (clip entity.Clipboard) {
 	return currClip
+}
+
+func (ts *ClipboardService) Update(t entity.Clipboard) {
+	currClip = t
+	return
 }

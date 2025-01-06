@@ -79,7 +79,7 @@
   </el-table>
   <br>
   <el-pagination
-      small
+      size="small"
       :style="{'justify-content':'center'}"
       :background="true"
       :hide-on-single-page="false"

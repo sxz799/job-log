@@ -39,18 +39,6 @@ func Add(c *gin.Context) {
 	}
 }
 
-func Update(c *gin.Context) {
-	var clip entity.Clipboard
-	err := c.ShouldBind(&clip)
-
-	if err != nil {
-		response.FailWithMessage("参数有误", c)
-		return
-	}
-	cs.Update(clip)
-	response.OkWithMessage("更新成功", c)
-}
-
 func Get(c *gin.Context) {
 	clip := cs.Get()
 	response.OkWithData(clip, c)

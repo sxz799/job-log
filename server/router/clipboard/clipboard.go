@@ -10,8 +10,10 @@ func Clipboard(e *gin.Engine) {
 	{
 		g.GET("/list", clipboard.List)
 		g.POST("", clipboard.Add)
-		g.PUT("", clipboard.Update)
 		g.GET("", clipboard.Get)
 		g.DELETE("/:id", clipboard.Del)
+		g.GET("/ws", clipboard.Ws)
 	}
+	//创建一个ws 实时更新信息
+
 }
