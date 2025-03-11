@@ -14,7 +14,7 @@
           v-model="content"
           :autosize="{ minRows: 8, maxRows: 45 }"
           type="textarea"
-          @change="updateClipboardData"
+          @input="updateClipboardData"
           placeholder="请输入内容"
       />
     </div>
@@ -155,7 +155,10 @@ function updateClipboardData() {
   console.log(ws.value, ws.value.readyState, WebSocket.OPEN)
   if (ws.value && ws.value.readyState === WebSocket.OPEN) {
     ws.value.send(content.value)
-    ElMessage.success('更新成功');
+    ElMessage.success({
+      message: '更新成功',
+      grouping: true,
+    });
   } else {
     ElMessage.error('WebSocket 连接未打开，无法发送消息');
   }
