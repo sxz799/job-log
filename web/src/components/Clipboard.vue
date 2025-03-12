@@ -14,7 +14,7 @@
           v-model="content"
           :autosize="{ minRows: 8, maxRows: 45 }"
           type="textarea"
-          @input="updateClipboardData"
+          @change="updateClipboardData"
           placeholder="请输入内容"
       />
     </div>
