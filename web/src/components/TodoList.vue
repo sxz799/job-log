@@ -1,102 +1,107 @@
 <template>
-
-
-  <el-row :gutter="10">
-    <el-col :span="21" :xs="18">
-      <el-input
-          :resize="'none'"
-          type="textarea"
-          :autosize="{ minRows: 2, maxRows: 6 }"
-          v-model="newTodo"
-          placeholder="添加待办事项... "
-      ></el-input>
-    </el-col>
-    <el-col :span="3" :xs="6"
-            style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
-      <el-button
-          size="large"
-          :auto-insert-space="true"
-          @click="addTodo"
-          type="primary">添加
-      </el-button>
-    </el-col>
-  </el-row>
-  <br>
-  <el-table
-      :data="todos"
-      border
-      style="width: 100%"
-  >
-    <el-table-column prop="id" label="序号" width="60">
-      <template #default="scope">
-        <el-tag round size="small" :type="getStatusTagType(scope.row.status)">
-          {{ scope.row.id }}
-        </el-tag>
-      </template>
-    </el-table-column>
-    <el-table-column prop="content" label="内容">
-      <template #default="scope">
+  <div class="space-y-4 pb-20">
+    <!-- Input Card -->
+    <div class="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-sm border border-gray-100 dark:border-gray-700">
+      <div class="flex gap-2">
         <el-input
-            :resize="'none'"
-            type="textarea"
-            :autosize="{ minRows: 1, maxRows: 6 }"
-            v-model="scope.row.content"
-            @blur="updateTodo(scope.row)"
-        ></el-input>
-      </template>
-    </el-table-column>
-    <el-table-column v-if="false" prop="status" label="状态" width="90">
-      <template #default="scope">
-        <el-tag round size="large" :type="getStatusTagType(scope.row.status)">
-          {{ getStatusLabel(scope.row.status) }}
-        </el-tag>
-      </template>
-    </el-table-column>
-    <el-table-column v-if="false" prop="create_at" label="创建时间" width="170"/>
-    <el-table-column v-if="false" prop="finish_at" label="完成时间" width="170"/>
-    <el-table-column v-if="false" prop="update_at" label="更新时间" width="180"/>
-    <el-table-column label="操作" width="110">
-      <template #default="scope">
-        <el-button v-if="scope.row.status==='N'" type="primary"
-                   @click="finishTodo(scope.row)" :icon="Check" circle>
-        </el-button>
-        <el-button v-if="scope.row.status==='Y'" type="warning"
-                   @click="unfinishTodo(scope.row)" :icon="RefreshLeft" circle>
-        </el-button>
-        <el-popconfirm
-            confirm-button-text="确定"
-            cancel-button-text="取消"
-            title="确定要删除吗?"
-            @confirm="deleteTodo(scope.row.id)"
+          v-model="newTodo"
+          :autosize="{ minRows: 1, maxRows: 3 }"
+          type="textarea"
+          class="flex-1 !text-base"
+          placeholder="有什么需要记录的吗?"
+          resize="none"
+          @keyup.enter.ctrl="addTodo" 
+        />
+        <el-button 
+          type="primary" 
+          @click="addTodo" 
+          class="!h-auto !px-4 !rounded-xl"
+          :disabled="!newTodo.trim()"
         >
-          <template #reference>
-            <el-button type="danger" circle :icon="Delete"></el-button>
-          </template>
-        </el-popconfirm>
+          添加
+        </el-button>
+      </div>
+    </div>
 
-      </template>
-    </el-table-column>
-  </el-table>
-  <br>
-  <el-pagination
-      size="small"
-      :style="{'justify-content':'center'}"
-      :background="true"
-      :hide-on-single-page="false"
-      :current-page="page"
-      :page-size="pageSize"
-      :page-sizes="[5, 10, 30, 50]"
-      :total="total"
-      layout=" sizes, prev, pager, next"
-      @current-change="handleCurrentChange"
-      @size-change="handleSizeChange"
-  />
+    <!-- Todo List -->
+    <div class="space-y-3">
+      <h3 class="text-sm font-semibold text-gray-500 dark:text-gray-400 px-1">待办列表</h3>
+      
+      <transition-group name="list" tag="div" class="space-y-3">
+        <div 
+          v-for="item in todos" 
+          :key="item.id"
+          class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-all duration-300"
+          :class="{'opacity-75 bg-gray-50 dark:bg-gray-800/50': item.status === 'Y'}"
+        >
+          <div class="flex items-start gap-3">
+            <!-- Status Checkbox -->
+            <button 
+              @click="item.status === 'Y' ? unfinishTodo(item) : finishTodo(item)"
+              class="mt-1 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors duration-200"
+              :class="item.status === 'Y' ? 'bg-green-500 border-green-500' : 'border-gray-300 dark:border-gray-600 hover:border-blue-500'"
+            >
+              <el-icon v-if="item.status === 'Y'" class="text-white" :size="14"><Check /></el-icon>
+            </button>
 
+            <!-- Content -->
+            <div class="flex-1 min-w-0">
+              <el-input
+                v-model="item.content"
+                type="textarea"
+                autosize
+                resize="none"
+                class="w-full !bg-transparent !border-0 !shadow-none !p-0 text-sm leading-relaxed"
+                :class="{'line-through text-gray-400': item.status === 'Y', 'text-gray-700 dark:text-gray-200': item.status === 'N'}"
+                @blur="updateTodo(item)"
+              />
+              <div class="flex items-center gap-2 mt-2">
+                 <span class="text-xs text-gray-400 font-mono">#{{ item.id }}</span>
+                 <span v-if="item.finish_at && item.status === 'Y'" class="text-xs text-green-500/70">Done {{ item.finish_at.split(' ')[0] }}</span>
+              </div>
+            </div>
 
+            <!-- Delete Action -->
+            <el-popconfirm
+              confirm-button-text="Yes"
+              cancel-button-text="No"
+              title="Delete this task?"
+              @confirm="deleteTodo(item.id)"
+              width="200"
+            >
+              <template #reference>
+                <button class="text-gray-400 hover:text-red-500 transition-colors p-1">
+                  <el-icon :size="18"><Delete /></el-icon>
+                </button>
+              </template>
+            </el-popconfirm>
+          </div>
+        </div>
+      </transition-group>
+
+      <!-- Empty State -->
+      <div v-if="todos.length === 0" class="text-center py-10 text-gray-400">
+        <el-icon :size="48" class="mb-2 opacity-50"><Check /></el-icon>
+        <p class="text-sm">暂无记录</p>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="flex justify-center pt-4">
+      <el-pagination
+        size="small"
+        background
+        layout="prev, pager, next"
+        :current-page="page"
+        :page-size="pageSize"
+        :total="total"
+        @current-change="handleCurrentChange"
+      />
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
-
 import {list, add, del, update} from "../api/todo";
 import {ref} from "vue";
 import {Check, Delete, RefreshLeft} from '@element-plus/icons-vue'
@@ -136,6 +141,7 @@ function addTodo() {
     content: newTodo.value
   }).then(response => {
     if (response.success) {
+      newTodo.value = "" // Clear input on success
       listTodos()
       ElMessage.success(response.message)
     } else {
@@ -237,8 +243,22 @@ function formatDateTime() {
 
 </script>
 
-<style>
+<style scoped>
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.3s ease;
+}
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateY(20px);
+}
 
+/* Customize Element Input to look like plain text */
+:deep(.el-textarea__inner) {
+  box-shadow: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+  border: none !important;
+}
 </style>
-
-
