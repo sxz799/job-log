@@ -21,7 +21,7 @@
       
       <div class="mt-4 flex justify-end">
         <el-button type="success" @click="addClipboardLog" :icon="Plus" class="!rounded-xl !px-6 w-full sm:w-auto">
-          Record
+          添加记录
         </el-button>
       </div>
     </div>
@@ -50,7 +50,7 @@
                 confirm-button-text="Yes"
                 cancel-button-text="No"
                 :icon="InfoFilled"
-                title="Delete this record?"
+                title="要删除记录吗?"
                 @confirm="handleDelete(item)"
                 width="200"
               >
@@ -71,7 +71,7 @@
       <!-- Empty State -->
       <div v-if="logs.length === 0" class="text-center py-10 text-gray-400">
         <el-icon :size="48" class="mb-2 opacity-50"><DocumentCopy /></el-icon>
-        <p class="text-sm">No history records</p>
+        <p class="text-sm">空</p>
       </div>
     </div>
 

@@ -65,7 +65,7 @@
             <el-popconfirm
               confirm-button-text="Yes"
               cancel-button-text="No"
-              title="Delete this task?"
+              title="要删除记录吗?"
               @confirm="deleteTodo(item.id)"
               width="200"
             >
